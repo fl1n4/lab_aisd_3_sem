@@ -245,3 +245,99 @@ void LinkedList<T>::delete_node(const T& data)
         }
     }
 }
+template <typename T>
+int LinkedList<T>::getSize() const
+{
+    int size = 0;
+    Node<T>* temp = head;
+    while (temp != nullptr)
+    {
+        ++size;
+        temp = temp->next;
+    }
+    return size;
+}
+
+template <typename T>
+LinkedList<T> addNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2)
+{
+    LinkedList<T> result;
+    int carry = 0;
+
+    Node<T>* temp1 = num1.getHead();
+    Node<T>* temp2 = num2.getHead();
+
+    while (temp1 != nullptr || temp2 != nullptr || carry != 0)
+    {
+        int sum = carry;
+
+        if (temp1 != nullptr)
+        {
+            sum += temp1->data;
+            temp1 = temp1->next;
+        }
+        if (temp2 != nullptr)
+        {
+            sum += temp2->data;
+            temp2 = temp2->next;
+        }
+
+        carry = sum / 10;
+        result.push_tail(sum % 10);
+    }
+
+    return result;
+}
+
+template <typename T>
+LinkedList<T> multiplyNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2)
+{
+    LinkedList<T> result;
+
+    int size1 = num1.getSize();
+    int size2 = num2.getSize();
+
+    LinkedList<T>* intermediateResults = new LinkedList<T>[size2];
+
+    Node<T>* temp2 = num2.getHead();
+    int index = 0;
+
+    while (temp2 != nullptr)
+    {
+        LinkedList<T> tempResult;
+        int carry = 0;
+
+        Node<T>* temp1 = num1.getHead();
+
+        for (int i = 0; i < index; ++i)
+        {
+            tempResult.push_tail(0);
+        }
+
+        while (temp1 != nullptr || carry != 0)
+        {
+            int product = carry;
+
+            if (temp1 != nullptr)
+            {
+                product += temp1->data * temp2->data;
+                temp1 = temp1->next;
+            }
+
+            carry = product / 10;
+            tempResult.push_tail(product % 10);
+        }
+
+        intermediateResults[index] = tempResult;
+        temp2 = temp2->next;
+        ++index;
+    }
+
+    for (int i = 0; i < size2; ++i)
+    {
+        result = addNumbers(result, intermediateResults[i]);
+    }
+
+    delete[] intermediateResults;
+    return result;
+}
