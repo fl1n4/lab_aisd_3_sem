@@ -102,3 +102,29 @@ LinkedList<T>::LinkedList(int size) : head(nullptr)
         append(value);
     }
 }
+
+template <typename T>
+LinkedList<T>::~LinkedList()
+{
+    clear();
+}
+template <typename T>
+LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other)
+{
+    if (this != &other)
+    {
+        clear();
+        Node<T>* temp = other.head;
+        while (temp != nullptr)
+        {
+            append(temp->data);
+            temp = temp->next;
+        }
+    }
+    return *this;
+}
+template <typename T>
+Node<T>* LinkedList<T>::getHead() const
+{
+    return head;
+}
