@@ -52,3 +52,53 @@ public:
         return os;
     }
 };
+
+template <typename T>
+LinkedList<T>::LinkedList() : head(nullptr) {}
+template <typename T>
+void LinkedList<T>::append(const T& data)
+{
+    Node<T>* newNode = new Node<T>(data);
+    if (head == nullptr)
+    {
+        head = newNode;
+    }
+    else
+    {
+        Node<T>* temp = head;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+template <typename T>
+void LinkedList<T>::clear()
+{
+    while (head != nullptr)
+    {
+        Node<T>* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+template <typename T>
+LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr)
+{
+    Node<T>* temp = other.head;
+    while (temp != nullptr)
+    {
+        append(temp->data);
+        temp = temp->next;
+    }
+}
+template <typename T>
+LinkedList<T>::LinkedList(int size) : head(nullptr)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        T value = rand() % 100; // Генерация случайного числа
+        append(value);
+    }
+}
