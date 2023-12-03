@@ -272,89 +272,50 @@ int LinkedList<T>::getSize() const
 }
 
 template <typename T>
-LinkedList<T> addNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2)
-{
-    LinkedList<T> result;
-    int carry = 0;
+LinkedList<T> addNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2) {
+    T number1 = convertListToNumber(num1);
+    T number2 = convertListToNumber(num2);
 
-    Node<T>* temp1 = num1.getHead();
-    Node<T>* temp2 = num2.getHead();
+    T sum = number1 + number2;
 
-    while (temp1 != nullptr || temp2 != nullptr || carry != 0)
-    {
-        int sum = carry;
+    LinkedList<T> resultList;
+    addDigitsToList(resultList, sum);
 
-        if (temp1 != nullptr)
-        {
-            sum += temp1->data;
-            temp1 = temp1->next;
-        }
-        if (temp2 != nullptr)
-        {
-            sum += temp2->data;
-            temp2 = temp2->next;
-        }
-
-        carry = sum / 10;
-        result.push_tail(sum % 10);
-    }
-
-    return result;
+    return resultList;
 }
-
 template <typename T>
-LinkedList<T> multiplyNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2)
-{
-    LinkedList<T> result;
+LinkedList<T> multiplyNumbers(const LinkedList<T>& num1, const LinkedList<T>& num2) {
+    T number1 = convertListToNumber(num1);
+    T number2 = convertListToNumber(num2);
 
-    int size1 = num1.getSize();
-    int size2 = num2.getSize();
+    T product = number1 * number2;
 
-    LinkedList<T>* intermediateResults = new LinkedList<T>[size2];
+    LinkedList<T> resultList;
+    addDigitsToList(resultList, product);
 
-    Node<T>* temp2 = num2.getHead();
-    int index = 0;
-
-    while (temp2 != nullptr)
-    {
-        LinkedList<T> tempResult;
-        int carry = 0;
-
-        Node<T>* temp1 = num1.getHead();
-
-        for (int i = 0; i < index; ++i)
-        {
-            tempResult.push_tail(0);
-        }
-
-        while (temp1 != nullptr || carry != 0)
-        {
-            int product = carry;
-
-            if (temp1 != nullptr)
-            {
-                product += temp1->data * temp2->data;
-                temp1 = temp1->next;
-            }
-
-            carry = product / 10;
-            tempResult.push_tail(product % 10);
-        }
-
-        intermediateResults[index] = tempResult;
-        temp2 = temp2->next;
-        ++index;
-    }
-
-    for (int i = 0; i < size2; ++i)
-    {
-        result = addNumbers(result, intermediateResults[i]);
-    }
-
-    delete[] intermediateResults;
-    return result;
+    return resultList;
 }
+template <typename T>
+void addDigitsToList(LinkedList<T>& list, T number) {
+    list.clear();
+    while (number > 0) {
+        T digit = number % 10;
+        list.push_head(digit);
+        number /= 10;
+    }
+}
+template <typename T>
+T convertListToNumber(const LinkedList<T>& list) {
+    Node<T>* current = list.getHead();
+    T number = 0;
 
+    while (current != nullptr) {
+        number = number * 10 + current->data;
+        current = current->next;
+    }
+
+    return number;
+}
 int main()
 {
     // Пример использования класса LinkedList
@@ -421,13 +382,11 @@ int main()
     list9.delete_node(2);
     std::cout << "List 9 after deleting nodes with value 2: " << list9 << std::endl;
     LinkedList<int> number1;
-    number1.push_head(0);
-    number1.push_head(0);
-    number1.push_head(2);
+    addDigitsToList(number1, 12);
+    
 
     LinkedList<int> number2;
-    number2.push_head(0);
-    number2.push_head(4);
+    addDigitsToList(number2, 56);
 
     LinkedList<int> product = multiplyNumbers(number1, number2);
 
@@ -436,19 +395,11 @@ int main()
     LinkedList<int> num1;
     LinkedList<int> num2;
 
-    // Добавляем цифры числа в список (в обратном порядке)
-    num1.push_tail(0);
-    num1.push_tail(0);
-    num1.push_tail(1); // Представляет число 243
-
-    num2.push_tail(0);
-    num2.push_tail(0);
-    num2.push_tail(2); // Представляет число 564
+    addDigitsToList(num1, 12);
+    addDigitsToList(num2, 59);
 
     // Складываем числа, представленные в виде списков
     LinkedList<int> sum = addNumbers(num1, num2);
-
-    // Выводим результат на экран
-    std::cout << "Sum: " << sum << std::endl; // Ожидаемый результат: 807 (243 + 564)
+    std::cout << "Sum: " << sum << std::endl;
     return 0;
 }
