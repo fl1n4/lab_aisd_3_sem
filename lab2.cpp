@@ -30,7 +30,6 @@ public:
     void append(const T& data);
     void clear();
 
-    void display();
     void push_tail(const T& data);
     void push_tail(const LinkedList<T>& otherList);
     void push_head(const T& data);
@@ -46,7 +45,7 @@ public:
         Node<T>* temp = list.head;
         while (temp != nullptr)
         {
-            os << temp->data;
+            os << temp->data<<" ";
             temp = temp->next;
         }
         return os;
@@ -340,4 +339,102 @@ LinkedList<T> multiplyNumbers(const LinkedList<T>& num1, const LinkedList<T>& nu
 
     delete[] intermediateResults;
     return result;
+}
+
+int main()
+{
+    // Пример использования класса LinkedList
+    LinkedList<int> list1; // Конструктор по умолчанию
+    list1.append(1);
+    list1.append(2);
+    list1.append(3);
+
+    std::cout << "List 1: "<<list1<<std::endl;
+
+    LinkedList<int> list2(list1); // Конструктор копирования
+    std::cout << "List 2 (copy of List 1): ";
+
+    LinkedList<int> list3(5); // Конструктор, заполняющий список случайными значениями
+    std::cout << "List 3 (filled with random values): "<<list3<<std::endl;
+
+    LinkedList<int> list4;
+    list4 = list2;
+    std::cout << "List 4 (assigned from List 2): " << list4 << std::endl;
+
+    LinkedList<int> list5;
+    list5.push_tail(4);
+    list5.push_tail(5);
+    std::cout << "List 5 (pushed individual elements): " << list5 << std::endl;
+
+    LinkedList<int> list6;
+    list6.append(6);
+    list6.append(7);
+    std::cout << "List 6: " << list6 << std::endl;
+
+    list5.push_tail(list6);
+    std::cout << "List 5 after push_tail of List 6: " << list5 << std::endl;
+
+    LinkedList<int> list7;
+    list7.push_head(3);
+    list7.push_head(2);
+    std::cout << "List 7 (pushed individual elements to head): " << list7 << std::endl;
+
+    LinkedList<int> list8;
+    list8.append(0);
+    list8.append(1);
+    std::cout << "List 8: " << list8 << std::endl;
+
+    list7.push_head(list8);
+    std::cout << "List 7 after push_head of List 8: " << list7 << std::endl;
+
+    LinkedList<int> list9;
+    list9.append(1);
+    list9.append(2);
+    list9.append(3);
+    std::cout << "Initial list 9: " << list9 << std::endl;
+
+    list9.pop_head();
+    std::cout << "List 9 after pop_head: " << list9 << std::endl;
+
+    list9.pop_tail();
+    std::cout << "List 9 after pop_tail: " << list9 << std::endl;
+
+    list9.append(2);
+    list9.append(2);
+    list9.append(4);
+    std::cout << "List 9 with duplicates: " << list9 << std::endl;
+
+    list9.delete_node(2);
+    std::cout << "List 9 after deleting nodes with value 2: ";
+    LinkedList<int> number1;
+    number1.push_head(9);
+    number1.push_head(1);
+    number1.push_head(2);
+
+    LinkedList<int> number2;
+    number2.push_head(5);
+    number2.push_head(2);
+
+    LinkedList<int> product = multiplyNumbers(number1, number2);
+
+    std::cout << "proizdevenie: " << product << std::endl;
+
+    LinkedList<int> num1;
+    LinkedList<int> num2;
+
+    // Добавляем цифры числа в список (в обратном порядке)
+    num1.push_tail(2);
+    num1.push_tail(4);
+    num1.push_tail(3); // Представляет число 243
+
+    num2.push_tail(5);
+    num2.push_tail(6);
+    num2.push_tail(4); // Представляет число 564
+
+    // Складываем числа, представленные в виде списков
+    LinkedList<int> sum = addNumbers(num1, num2);
+
+    // Выводим результат на экран
+    std::cout << "Sum: " << sum << std::endl; // Ожидаемый результат: 807 (243 + 564)
+    return 0;
 }
