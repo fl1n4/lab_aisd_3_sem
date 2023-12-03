@@ -183,3 +183,36 @@ void LinkedList<T>::push_head(const LinkedList<T>& otherList)
         temp = temp->next;
     }
 }
+template <typename T>
+void LinkedList<T>::pop_head()
+{
+    if (head != nullptr)
+    {
+        Node<T>* temp = head;
+        head = head->next;
+        delete temp;
+    }
+}
+template <typename T>
+void LinkedList<T>::pop_tail()
+{
+    if (head == nullptr)
+    {
+        return;
+    }
+
+    if (head->next == nullptr)
+    {
+        delete head;
+        head = nullptr;
+        return;
+    }
+
+    Node<T>* temp = head;
+    while (temp->next->next != nullptr)
+    {
+        temp = temp->next;
+    }
+    delete temp->next;
+    temp->next = nullptr;
+}
