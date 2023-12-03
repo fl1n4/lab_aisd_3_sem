@@ -128,3 +128,58 @@ Node<T>* LinkedList<T>::getHead() const
 {
     return head;
 }
+template <typename T>
+void LinkedList<T>::push_tail(const T& data)
+{
+    Node<T>* newNode = new Node<T>(data);
+    if (head == nullptr)
+    {
+        head = newNode;
+    }
+    else {
+        Node<T>* temp = head;
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+}
+template <typename T>
+void LinkedList<T>::push_tail(const LinkedList<T>& otherList)
+{
+    Node<T>* temp = otherList.head;
+    while (temp != nullptr) {
+        push_tail(temp->data);
+        temp = temp->next;
+    }
+}
+template <typename T>
+void LinkedList<T>::push_head(const T& data)
+{
+    Node<T>* newNode = new Node<T>(data);
+    newNode->next = head;
+    head = newNode;
+}
+template <typename T>
+void LinkedList<T>::push_head(const LinkedList<T>& otherList)
+{
+    LinkedList<T> tempList(otherList);
+    Node<T>* temp = tempList.head;
+
+    if (temp == nullptr)
+    {
+        return;
+    }
+
+    while (temp->next != nullptr)
+    {
+        temp = temp->next;
+    }
+
+    while (temp != nullptr)
+    {
+        push_head(temp->data);
+        temp = temp->next;
+    }
+}
