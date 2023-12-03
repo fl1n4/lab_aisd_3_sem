@@ -1,5 +1,5 @@
 #include <iostream>
-#include <cstdlib> // Для использования функции rand()
+#include <random>
 
 template <typename T>
 class Node
@@ -40,17 +40,32 @@ public:
     int getSize() const;
 
     LinkedList<T>& operator=(const LinkedList<T>& other);
-    friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list)
-    {
+    friend std::ostream& operator<<(std::ostream& os, const LinkedList<T>& list) {
         Node<T>* temp = list.head;
-        while (temp != nullptr)
-        {
+
+        // Пропускаем ведущие нули
+        while (temp != nullptr && temp->data == 0 && temp->next != nullptr) {
+            temp = temp->next;
+        }
+
+        // Выводим оставшееся число
+        while (temp != nullptr) {
             os << temp->data<<" ";
             temp = temp->next;
         }
+
         return os;
     }
 };
+
+template <typename T>
+T getRandomNumber(T min, T max) {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<T> distrib(min, max);
+    T result = distrib(gen);
+    return (result < 0) ? (-result) % 10 : result % 10;
+}
 
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr) {}
@@ -93,11 +108,10 @@ LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr)
     }
 }
 template <typename T>
-LinkedList<T>::LinkedList(int size) : head(nullptr)
+LinkedList<T>::LinkedList(int size) : head(nullptr) 
 {
-    for (int i = 0; i < size; ++i)
-    {
-        T value = rand() % 100; // Генерация случайного числа
+    for (int i = 0; i < size; ++i) {
+        T value = getRandomNumber(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
         append(value);
     }
 }
@@ -405,15 +419,15 @@ int main()
     std::cout << "List 9 with duplicates: " << list9 << std::endl;
 
     list9.delete_node(2);
-    std::cout << "List 9 after deleting nodes with value 2: ";
+    std::cout << "List 9 after deleting nodes with value 2: " << list9 << std::endl;
     LinkedList<int> number1;
-    number1.push_head(9);
-    number1.push_head(1);
+    number1.push_head(0);
+    number1.push_head(0);
     number1.push_head(2);
 
     LinkedList<int> number2;
-    number2.push_head(5);
-    number2.push_head(2);
+    number2.push_head(0);
+    number2.push_head(4);
 
     LinkedList<int> product = multiplyNumbers(number1, number2);
 
@@ -423,13 +437,13 @@ int main()
     LinkedList<int> num2;
 
     // Добавляем цифры числа в список (в обратном порядке)
-    num1.push_tail(2);
-    num1.push_tail(4);
-    num1.push_tail(3); // Представляет число 243
+    num1.push_tail(0);
+    num1.push_tail(0);
+    num1.push_tail(1); // Представляет число 243
 
-    num2.push_tail(5);
-    num2.push_tail(6);
-    num2.push_tail(4); // Представляет число 564
+    num2.push_tail(0);
+    num2.push_tail(0);
+    num2.push_tail(2); // Представляет число 564
 
     // Складываем числа, представленные в виде списков
     LinkedList<int> sum = addNumbers(num1, num2);
