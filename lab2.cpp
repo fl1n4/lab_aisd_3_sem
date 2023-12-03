@@ -318,7 +318,6 @@ T convertListToNumber(const LinkedList<T>& list) {
 }
 int main()
 {
-    // Пример использования класса LinkedList
     LinkedList<int> list1; // Конструктор по умолчанию
     list1.append(1);
     list1.append(2);
