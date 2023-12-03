@@ -216,3 +216,32 @@ void LinkedList<T>::pop_tail()
     delete temp->next;
     temp->next = nullptr;
 }
+template <typename T>
+void LinkedList<T>::delete_node(const T& data)
+{
+    Node<T>* current = head;
+    Node<T>* previous = nullptr;
+
+    while (current != nullptr)
+    {
+        if (current->data == data)
+        {
+            if (previous == nullptr)
+            {
+                pop_head();
+                current = head;
+            }
+            else
+            {
+                previous->next = current->next;
+                delete current;
+                current = previous->next;
+            }
+        }
+        else
+        {
+            previous = current;
+            current = current->next;
+        }
+    }
+}
