@@ -27,7 +27,6 @@ public:
 
     Node<T>* getHead() const;
 
-    void append(const T& data);
     void clear();
 
     void push_tail(const T& data);
@@ -70,24 +69,6 @@ T getRandomNumber(T min, T max) {
 template <typename T>
 LinkedList<T>::LinkedList() : head(nullptr) {}
 template <typename T>
-void LinkedList<T>::append(const T& data)
-{
-    Node<T>* newNode = new Node<T>(data);
-    if (head == nullptr)
-    {
-        head = newNode;
-    }
-    else
-    {
-        Node<T>* temp = head;
-        while (temp->next != nullptr)
-        {
-            temp = temp->next;
-        }
-        temp->next = newNode;
-    }
-}
-template <typename T>
 void LinkedList<T>::clear()
 {
     while (head != nullptr)
@@ -103,7 +84,7 @@ LinkedList<T>::LinkedList(const LinkedList<T>& other) : head(nullptr)
     Node<T>* temp = other.head;
     while (temp != nullptr)
     {
-        append(temp->data);
+        push_tail(temp->data);
         temp = temp->next;
     }
 }
@@ -112,7 +93,7 @@ LinkedList<T>::LinkedList(int size) : head(nullptr)
 {
     for (int i = 0; i < size; ++i) {
         T value = getRandomNumber(std::numeric_limits<T>::min(), std::numeric_limits<T>::max());
-        append(value);
+        push_tail(value);
     }
 }
 
@@ -130,7 +111,7 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& other)
         Node<T>* temp = other.head;
         while (temp != nullptr)
         {
-            append(temp->data);
+            push_tail(temp->data);
             temp = temp->next;
         }
     }
@@ -319,9 +300,9 @@ T convertListToNumber(const LinkedList<T>& list) {
 int main()
 {
     LinkedList<int> list1; // Конструктор по умолчанию
-    list1.append(1);
-    list1.append(2);
-    list1.append(3);
+    list1.push_tail(1);
+    list1.push_tail(2);
+    list1.push_tail(3);
 
     std::cout << "List 1: "<<list1<<std::endl;
 
@@ -341,8 +322,8 @@ int main()
     std::cout << "List 5 (pushed individual elements): " << list5 << std::endl;
 
     LinkedList<int> list6;
-    list6.append(6);
-    list6.append(7);
+    list6.push_tail(6);
+    list6.push_tail(7);
     std::cout << "List 6: " << list6 << std::endl;
 
     list5.push_tail(list6);
@@ -354,17 +335,17 @@ int main()
     std::cout << "List 7 (pushed individual elements to head): " << list7 << std::endl;
 
     LinkedList<int> list8;
-    list8.append(0);
-    list8.append(1);
+    list8.push_tail(0);
+    list8.push_tail(1);
     std::cout << "List 8: " << list8 << std::endl;
 
     list7.push_head(list8);
     std::cout << "List 7 after push_head of List 8: " << list7 << std::endl;
 
     LinkedList<int> list9;
-    list9.append(1);
-    list9.append(2);
-    list9.append(3);
+    list9.push_tail(1);
+    list9.push_tail(2);
+    list9.push_tail(3);
     std::cout << "Initial list 9: " << list9 << std::endl;
 
     list9.pop_head();
@@ -373,9 +354,9 @@ int main()
     list9.pop_tail();
     std::cout << "List 9 after pop_tail: " << list9 << std::endl;
 
-    list9.append(2);
-    list9.append(2);
-    list9.append(4);
+    list9.push_tail(2);
+    list9.push_tail(2);
+    list9.push_tail(4);
     std::cout << "List 9 with duplicates: " << list9 << std::endl;
 
     list9.delete_node(2);
